@@ -32,7 +32,7 @@ func NewProduct(name string, price float64) (*Product, error) {
 
 	err := product.Validate()
 	if err != nil {
-		return &Product{}, err
+		return nil, err
 	}
 
 	return product, nil
