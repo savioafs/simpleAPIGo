@@ -22,7 +22,7 @@ func NewProductHandler(db database.ProductStorer) *ProductHandler {
 	}
 }
 
-func (ph *ProductHandler) CreateProduct(w http.ResponseWriter, r *http.Request) {
+func (h *ProductHandler) CreateProduct(w http.ResponseWriter, r *http.Request) {
 	var product dto.CreateProductInput
 	err := json.NewDecoder(r.Body).Decode(&product)
 	if err != nil {
@@ -34,7 +34,7 @@ func (ph *ProductHandler) CreateProduct(w http.ResponseWriter, r *http.Request) 
 		w.WriteHeader(http.StatusBadRequest)
 	}
 
-	err = ph.ProductDB.Create(p)
+	err = h.ProductDB.Create(p)
 	if err != nil {
 		w.WriteHeader(http.StatusInternalServerError)
 	}
@@ -42,7 +42,7 @@ func (ph *ProductHandler) CreateProduct(w http.ResponseWriter, r *http.Request) 
 	w.WriteHeader(http.StatusCreated)
 }
 
-func (ph *ProductHandler) GetProduct(w http.ResponseWriter, r *http.Request) {
+func (h *ProductHandler) GetProduct(w http.ResponseWriter, r *http.Request) {
 	id := chi.URLParam(r, "id")
 
 	if id == "" {
@@ -50,7 +50,7 @@ func (ph *ProductHandler) GetProduct(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	product, err := ph.ProductDB.FindByID(id)
+	product, err := h.ProductDB.FindByID(id)
 	if err != nil {
 		w.WriteHeader(http.StatusNotFound)
 		return
@@ -61,7 +61,7 @@ func (ph *ProductHandler) GetProduct(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(product)
 }
 
-func (ph *ProductHandler) GetProducts(w http.ResponseWriter, r *http.Request) {
+func (h *ProductHandler) GetProducts(w http.ResponseWriter, r *http.Request) {
 	page := r.URL.Query().Get("page")
 	limit := r.URL.Query().Get("limit")
 
@@ -77,7 +77,7 @@ func (ph *ProductHandler) GetProducts(w http.ResponseWriter, r *http.Request) {
 
 	sort := r.URL.Query().Get("sort")
 
-	products, err := ph.ProductDB.FindAll(pageInt, limitInt, sort)
+	products, err := h.ProductDB.FindAll(pageInt, limitInt, sort)
 	if err != nil {
 		w.WriteHeader(http.StatusInternalServerError)
 		return
@@ -88,7 +88,7 @@ func (ph *ProductHandler) GetProducts(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(products)
 }
 
-func (ph *ProductHandler) UpdateProduct(w http.ResponseWriter, r *http.Request) {
+func (h *ProductHandler) UpdateProduct(w http.ResponseWriter, r *http.Request) {
 	id := chi.URLParam(r, "id")
 
 	if id == "" {
@@ -109,13 +109,13 @@ func (ph *ProductHandler) UpdateProduct(w http.ResponseWriter, r *http.Request) 
 		return
 	}
 
-	_, err = ph.ProductDB.FindByID(product.ID.String())
+	_, err = h.ProductDB.FindByID(product.ID.String())
 	if err != nil {
 		w.WriteHeader(http.StatusNotFound)
 		return
 	}
 
-	err = ph.ProductDB.Update(&product)
+	err = h.ProductDB.Update(&product)
 	if err != nil {
 		w.WriteHeader(http.StatusInternalServerError)
 		return
@@ -124,7 +124,7 @@ func (ph *ProductHandler) UpdateProduct(w http.ResponseWriter, r *http.Request) 
 	w.WriteHeader(http.StatusOK)
 }
 
-func (ph *ProductHandler) DeleteProduct(w http.ResponseWriter, r *http.Request) {
+func (h *ProductHandler) DeleteProduct(w http.ResponseWriter, r *http.Request) {
 	id := chi.URLParam(r, "id")
 
 	if id == "" {
@@ -132,13 +132,13 @@ func (ph *ProductHandler) DeleteProduct(w http.ResponseWriter, r *http.Request) 
 		return
 	}
 
-	_, err := ph.ProductDB.FindByID(id)
+	_, err := h.ProductDB.FindByID(id)
 	if err != nil {
 		w.WriteHeader(http.StatusNotFound)
 		return
 	}
 
-	err = ph.ProductDB.Delete(id)
+	err = h.ProductDB.Delete(id)
 	if err != nil {
 		w.WriteHeader(http.StatusInternalServerError)
 	}
