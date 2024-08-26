@@ -5,6 +5,7 @@ import (
 
 	"github.com/go-chi/chi"
 	"github.com/go-chi/chi/middleware"
+	"github.com/go-chi/jwtauth"
 	"github.com/savioafs/simpleAPIGo/configs"
 	"github.com/savioafs/simpleAPIGo/internal/entity"
 	"github.com/savioafs/simpleAPIGo/internal/infra/database"
@@ -36,6 +37,8 @@ func main() {
 	r.Use(middleware.Logger)
 
 	r.Route("/products", func(r chi.Router) {
+		r.Use(jwtauth.Verifier(configs.TokenAuth))
+		r.Use(jwtauth.Authenticator)
 		r.Post("/", productHandler.CreateProduct)
 		r.Get("/", productHandler.GetProducts)
 		r.Get("/{id}", productHandler.GetProduct)
