@@ -7,9 +7,11 @@ import (
 	"github.com/go-chi/chi/middleware"
 	"github.com/go-chi/jwtauth"
 	"github.com/savioafs/simpleAPIGo/configs"
+	_ "github.com/savioafs/simpleAPIGo/docs"
 	"github.com/savioafs/simpleAPIGo/internal/entity"
 	"github.com/savioafs/simpleAPIGo/internal/infra/database"
 	"github.com/savioafs/simpleAPIGo/internal/infra/webserver/handlers"
+	httpSwagger "github.com/swaggo/http-swagger"
 	"gorm.io/driver/sqlite"
 	"gorm.io/gorm"
 )
@@ -71,6 +73,8 @@ func main() {
 		r.Post("/", userHandler.CreateUser)
 		r.Post("/generate_token", userHandler.GetJWT)
 	})
+
+	r.Get("/docs/*", httpSwagger.Handler(httpSwagger.URL("http://localhost:8000/docs/doc.json")))
 
 	http.ListenAndServe(":8000", r)
 }
