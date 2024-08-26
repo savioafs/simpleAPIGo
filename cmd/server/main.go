@@ -3,6 +3,8 @@ package main
 import (
 	"net/http"
 
+	"github.com/go-chi/chi"
+	"github.com/go-chi/chi/middleware"
 	"github.com/savioafs/simpleAPIGo/configs"
 	"github.com/savioafs/simpleAPIGo/internal/entity"
 	"github.com/savioafs/simpleAPIGo/internal/infra/database"
@@ -27,6 +29,11 @@ func main() {
 	productDB := database.NewProduct(db)
 	productHandler := handlers.NewProductHandler(productDB)
 
-	http.HandleFunc("/products", productHandler.CreateProduct)
-	http.ListenAndServe(":8000", nil)
+	r := chi.NewRouter()
+	r.Use(middleware.Logger)
+	r.Post("/products", productHandler.CreateProduct)
+	r.Get("/products/{id}", productHandler.GetProduct)
+	r.Put("/products/{id}", productHandler.UpdateProduct)
+
+	http.ListenAndServe(":8000", r)
 }
