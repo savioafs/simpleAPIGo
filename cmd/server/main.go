@@ -14,6 +14,24 @@ import (
 	"gorm.io/gorm"
 )
 
+// @title Simple Api Go
+// @version 1.0
+// @description Product API with authentication
+// @termsOfService http://swagger.io/terms/
+
+// @contact.name Sávio Alexandre
+// @contact.url https://savioalexandre.dev
+// @contact.email contact@savioalexandre.dev
+
+// @lincense.name Savio Dev License
+// @lincense.url https://savioalexandre.dev
+
+// @host localhost:8000
+// @BasePath /
+// @securityDefinitions.apikey ApiKeyAuth
+// @in header
+// @name Authorization
+
 func main() {
 	configs, err := configs.LoadConfig(".")
 	if err != nil {

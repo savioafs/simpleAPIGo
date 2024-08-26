@@ -1,0 +1,24 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "description": "Product API with authentication",
+        "title": "Simple Api Go",
+        "termsOfService": "http://swagger.io/terms/",
+        "contact": {
+            "name": "Sávio Alexandre",
+            "url": "https://savioalexandre.dev",
+            "email": "contact@savioalexandre.dev"
+        },
+        "version": "1.0"
+    },
+    "host": "localhost:8000",
+    "basePath": "/",
+    "paths": {},
+    "securityDefinitions": {
+        "ApiKeyAuth": {
+            "type": "apiKey",
+            "name": "Authorization",
+            "in": "header"
+        }
+    }
+}
