@@ -1,0 +1,16 @@
+{
+  "sqltools.connections": [
+    {
+      "previewLimit": 50,
+      "driver": "SQLite",
+      "name": "simpleAPIGo",
+      "database": "${workspaceFolder:simpleAPIGo}/test.db"
+    },
+    {
+      "previewLimit": 50,
+      "driver": "SQLite",
+      "database": "${workspaceFolder:simpleAPIGo}/test.db",
+      "name": "ok"
+    }
+  ]
+}
