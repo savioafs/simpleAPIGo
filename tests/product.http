@@ -20,3 +20,7 @@ Content-Type: application/json
   "name": "My product Updated",
   "price": 12590
 }
+
+###
+
+DELETE http://localhost:8000/products/f3251177-9329-4a30-beff-c7024c61ca6f

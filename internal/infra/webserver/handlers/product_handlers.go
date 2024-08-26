@@ -46,11 +46,13 @@ func (ph *ProductHandler) GetProduct(w http.ResponseWriter, r *http.Request) {
 
 	if id == "" {
 		w.WriteHeader(http.StatusBadRequest)
+		return
 	}
 
 	product, err := ph.ProductDB.FindByID(id)
 	if err != nil {
 		w.WriteHeader(http.StatusNotFound)
+		return
 	}
 
 	w.Header().Set("Content-Type", "application/json")
@@ -89,6 +91,28 @@ func (ph *ProductHandler) UpdateProduct(w http.ResponseWriter, r *http.Request) 
 	if err != nil {
 		w.WriteHeader(http.StatusInternalServerError)
 		return
+	}
+
+	w.WriteHeader(http.StatusOK)
+}
+
+func (ph *ProductHandler) DeleteProduct(w http.ResponseWriter, r *http.Request) {
+	id := chi.URLParam(r, "id")
+
+	if id == "" {
+		w.WriteHeader(http.StatusBadRequest)
+		return
+	}
+
+	_, err := ph.ProductDB.FindByID(id)
+	if err != nil {
+		w.WriteHeader(http.StatusNotFound)
+		return
+	}
+
+	err = ph.ProductDB.Delete(id)
+	if err != nil {
+		w.WriteHeader(http.StatusInternalServerError)
 	}
 
 	w.WriteHeader(http.StatusOK)
